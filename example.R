@@ -1,5 +1,5 @@
 
-install.packages("fda.usc")
+# install.packages("fda.usc")
 library('fda.usc')
 
 
@@ -15,5 +15,5 @@ group<-iris[,5]
 x<-iris[,1:4]
 out10=classif.DD(group,x,depth="LD",classif="lda")
 summary(out10)
-out11=classif.DD(group,list(x,x),depth=c("MhD","LD"),classif="lda")
+out11=classif.DD(group,list(x,x),depth=c("MhD"),classif="lda")
 summary(out11)
