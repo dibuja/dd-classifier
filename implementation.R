@@ -70,7 +70,7 @@ table(knn.pred,gb.test)
 mean(knn.pred==gb.test)
 
 
-############## Entrenamiento y predicción con DD-Classifier #############
+############## Entrenamiento y predicción con DD-Classifier e iris data #############
 library('fda.usc')
 
 data(iris) # Importamos los datos.
@@ -100,3 +100,161 @@ table(pred1,group.test)
 table(pred2,group.test)
 
 
+############## Entrenamiento y predicción con DD-Classifier y datos aleatorios #############
+
+###### Igual media y dispersión ######
+library('fda.usc')
+
+n<-400
+set.seed(42)
+
+d1 <-mvrnorm(n,c(1,1,1),diag(3))
+d2 <-mvrnorm(n,c(1,1,1),diag(3))
+
+data<- rbind(d1,d2)
+
+g<-c(rep(1,n),rep(0,n))
+
+appended<-data.frame(cbind(data),g)
+
+ii<-sample(1:800,640) # Dividimos 80-20 para training y testeado.
+
+group.train<-factor(appended[ii,4]) # y de entrenamiento.
+x.train<-appended[ii,1:3] # x de entrenamiento.
+
+out1=classif.DD(group.train,x.train,depth="MhD",classif="lda") # Clasificador 1.
+out2=classif.DD(group.train,x.train,depth="MhD",classif="DD3") # Clasificador 2.
+
+summary(out1)
+summary(out2)
+
+x.test<-appended[-ii,1:3] # x de prueba.
+group.test<-appended[-ii,4] # y de prueba.
+
+# Predicciones.
+pred1=predict(out1,x.test)
+pred2=predict(out2,x.test)
+
+# Matrices de confusión.
+table(pred1,group.test)
+table(pred2,group.test)
+
+
+###### Igual media y diferente dispersión ######
+library('fda.usc')
+
+n<-400
+set.seed(42)
+
+d1 <-mvrnorm(n,c(1,1,1),diag(3)*5)
+d2 <-mvrnorm(n,c(1,1,1),diag(3))
+
+data<- rbind(d1,d2)
+
+g<-c(rep(1,n),rep(0,n))
+
+appended<-data.frame(cbind(data),g)
+
+ii<-sample(1:800,640) # Dividimos 80-20 para training y testeado.
+
+group.train<-factor(appended[ii,4]) # y de entrenamiento.
+x.train<-appended[ii,1:3] # x de entrenamiento.
+
+dev.new()
+out1=classif.DD(group.train,x.train,depth="MhD",classif="lda") # Clasificador 1.
+out2=classif.DD(group.train,x.train,depth="HS",classif="DD2") # Clasificador 2.
+
+summary(out1)
+summary(out2)
+
+x.test<-appended[-ii,1:3] # x de prueba.
+group.test<-appended[-ii,4] # y de prueba.
+
+# Predicciones.
+pred1=predict(out1,x.test)
+pred2=predict(out2,x.test)
+
+# Matrices de confusión.
+table(pred1,group.test)
+table(pred2,group.test)
+
+
+
+
+###### Diferente media e igual dispersión ######
+library('fda.usc')
+
+n<-400
+set.seed(42)
+
+d1 <-mvrnorm(n,c(3,3,3),diag(3))
+d2 <-mvrnorm(n,c(1,1,1),diag(3))
+
+data<- rbind(d1,d2)
+
+g<-c(rep(1,n),rep(0,n))
+
+appended<-data.frame(cbind(data),g)
+
+ii<-sample(1:800,640) # Dividimos 80-20 para training y testeado.
+
+group.train<-factor(appended[ii,4]) # y de entrenamiento.
+x.train<-appended[ii,1:3] # x de entrenamiento.
+
+dev.new()
+out1=classif.DD(group.train,x.train,depth="HS",classif="DD2") # Clasificador 1.
+summary(out1)
+
+out2=classif.DD(group.train,x.train,depth="LD",classif="DD2") # Clasificador 2.
+summary(out2)
+
+
+
+x.test<-appended[-ii,1:3] # x de prueba.
+group.test<-appended[-ii,4] # y de prueba.
+
+# Predicciones.
+pred1=predict(out1,x.test)
+pred2=predict(out2,x.test)
+
+# Matrices de confusión.
+table(pred1,group.test)
+table(pred2,group.test)
+###### Diferente media y dispersión ######
+library('fda.usc')
+
+n<-400
+set.seed(42)
+
+d1 <-mvrnorm(n,c(3,3,3),diag(3)*5)
+d2 <-mvrnorm(n,c(1,1,1),diag(3))
+
+data<- rbind(d1,d2)
+
+g<-c(rep(1,n),rep(0,n))
+
+appended<-data.frame(cbind(data),g)
+
+ii<-sample(1:800,640) # Dividimos 80-20 para training y testeado.
+
+group.train<-factor(appended[ii,4]) # y de entrenamiento.
+x.train<-appended[ii,1:3] # x de entrenamiento.
+
+dev.new()
+out1=classif.DD(group.train,x.train,depth="HS",classif="DD3") # Clasificador 1.
+summary(out1)
+
+out2=classif.DD(group.train,x.train,depth="LD",classif="DD2") # Clasificador 2.
+summary(out2)
+
+
+x.test<-appended[-ii,1:3] # x de prueba.
+group.test<-appended[-ii,4] # y de prueba.
+
+# Predicciones.
+pred1=predict(out1,x.test)
+pred2=predict(out2,x.test)
+
+# Matrices de confusión.
+table(pred1,group.test)
+table(pred2,group.test)
