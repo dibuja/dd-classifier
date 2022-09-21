@@ -1,4 +1,4 @@
-# multivariate-analysis
+# Using a DD-Classifier to predict heart failures.
 
 Project performed within the scope of the course "Multivariate Analysis" at EAFIT University. The project consists of utilising different configurations of the DD-Classifier for clustering a population based on their risk to suffer a heart failure.
 
